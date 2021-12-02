@@ -24,7 +24,7 @@ class Example extends Component
 
     public function toggleColor()
     {
-        $pick = array_filter(self::colors, fn($color) => $color !== $this->color);
+        $pick = array_filter(self::colors, fn ($color) => $color !== $this->color);
         $color = $pick[array_rand($pick)] ?? null;
 
         session()->put('skeleton.example.color', $color);

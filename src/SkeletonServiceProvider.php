@@ -6,8 +6,8 @@ use Illuminate\Support\Facades\Route;
 use Livewire\Livewire;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use VendorName\Skeleton\Console\InstallCommand;
 use VendorName\Skeleton\Components\AppLayout;
+use VendorName\Skeleton\Console\InstallCommand;
 use VendorName\Skeleton\Http\Livewire\Example;
 
 class SkeletonServiceProvider extends PackageServiceProvider
@@ -41,7 +41,7 @@ class SkeletonServiceProvider extends PackageServiceProvider
     public function publishAppProvider()
     {
         $this->publishes([
-            __DIR__ . '/ApplicationServiceProvider.php.stub' => app_path('Providers/SkeletonServiceProvider.php')
+            __DIR__ . '/ApplicationServiceProvider.php.stub' => app_path('Providers/SkeletonServiceProvider.php'),
         ], 'skeleton-provider');
     }
 
