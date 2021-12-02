@@ -1,0 +1,61 @@
+<?php
+
+namespace App\Providers;
+
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\ServiceProvider;
+use VendorName\Skeleton\Skeleton;
+
+class SkeletonServiceProvider extends ServiceProvider
+{
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot(): void
+    {
+        $this->authorization();
+    }
+
+    /**
+     * Configure the Dashboard authorization services.
+     *
+     * @return void
+     */
+    protected function authorization(): void
+    {
+        $this->gate();
+
+        Skeleton::auth(function ($request) {
+            return app()->environment('local') ||
+                Gate::check('viewSkeleton', [$request->user()]);
+        });
+    }
+
+    /**
+     * Register the Dashboard gate.
+     *
+     * This gate determines who can access Dashboard in non-local environments.
+     *
+     * @return void
+     */
+    protected function gate(): void
+    {
+        Gate::define('viewSkeleton', function ($user) {
+            return in_array($user->email, [
+                //
+            ]);
+        });
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register(): void
+    {
+        //
+    }
+}

@@ -17,15 +17,20 @@
     ],
     "require": {
         "php": "^8.0",
-        "spatie/laravel-package-tools": "^1.9.2",
-        "illuminate/contracts": "^8.73"
+        "illuminate/contracts": "^8.73",
+        "livewire/livewire": "^2.7",
+        "spatie/laravel-package-tools": "^1.9.2"
     },
     "require-dev": {
-        "nunomaduro/collision": "^5.10",
+        "brianium/paratest": "^6.3",
+        "nunomaduro/collision": "^5.3",
         "nunomaduro/larastan": "^1.0",
+        "nunomaduro/laravel-mojito": "^0.2.8",
         "orchestra/testbench": "^6.22",
         "pestphp/pest": "^1.21",
         "pestphp/pest-plugin-laravel": "^1.1",
+        "pestphp/pest-plugin-livewire": "^1.0",
+        "pestphp/pest-plugin-parallel": "^0.3.1",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan-deprecation-rules": "^1.0",
         "phpstan/phpstan-phpunit": "^1.0",
@@ -49,16 +54,15 @@
         "test-coverage": "vendor/bin/pest coverage"
     },
     "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
         "sort-packages": true
     },
     "extra": {
         "laravel": {
             "providers": [
                 "VendorName\\Skeleton\\SkeletonServiceProvider"
-            ],
-            "aliases": {
-                "Skeleton": "VendorName\\Skeleton\\Facades\\Skeleton"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",

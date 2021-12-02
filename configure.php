@@ -133,6 +133,7 @@ $packageSlugWithoutPrefix = remove_prefix('laravel-', $packageSlug);
 
 $className = title_case($packageName);
 $className = ask('Class name', $className);
+$envPrefix = strtoupper($className);
 $description = ask('Package description', "This is my package {$packageSlug}");
 
 $usePhpStan = confirm('Enable PhpStan?', true);
@@ -172,6 +173,7 @@ foreach ($files as $file) {
         ':package_slug' => $packageSlug,
         ':package_slug_without_prefix' => $packageSlugWithoutPrefix,
         'Skeleton' => $className,
+        'SKELETON' => $envPrefix,
         'skeleton' => $packageSlug,
         ':package_description' => $description,
     ]);
@@ -181,6 +183,7 @@ foreach ($files as $file) {
         str_contains($file, 'src/SkeletonServiceProvider.php') => rename($file, './src/' . $className . 'ServiceProvider.php'),
         str_contains($file, 'src/Facades/Skeleton.php') => rename($file, './src/Facades/' . $className . '.php'),
         str_contains($file, 'src/Commands/SkeletonCommand.php') => rename($file, './src/Commands/' . $className . 'Command.php'),
+        str_contains($file, 'tests/SkeletonTest.php') => rename($file, './tests/' . $className . 'Test.php'),
         str_contains($file, 'database/migrations/create_skeleton_table.php.stub') => rename($file, './database/migrations/create_' . $packageSlugWithoutPrefix . '_table.php.stub'),
         str_contains($file, 'config/skeleton.php') => rename($file, './config/' . $packageSlugWithoutPrefix . '.php'),
         default => [],
@@ -203,7 +206,7 @@ if (! $usePhpStan) {
         'phpstan/phpstan-phpunit',
         'nunomaduro/larastan',
     ]);
-    
+
     remove_composer_script('phpstan');
 }
 
@@ -211,6 +214,7 @@ if (! $useUpdateChangelogWorkflow) {
     safeUnlink(__DIR__ . '/.github/workflows/update-changelog.yml');
 }
 
+confirm('Execute `npm install` and build assets?') && run('npm install && npm prod');
 confirm('Execute `composer install` and run tests?') && run('composer install && composer test');
 
 confirm('Let this script delete itself?', true) && unlink(__FILE__);

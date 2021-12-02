@@ -1,4 +1,6 @@
-# :package_description
+# :package_name
+
+:package_description
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/:vendor_slug/:package_slug/run-tests?label=tests)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
@@ -6,7 +8,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
 
 ---
-This repo can be used to scaffold a Laravel package. Follow these steps to get started:
+This repo can be used to scaffold a Simple TALL (Tailwind CSS, AlpineJS, Laravel, Livewire) package that could act as 
+an add-on dash to your project (Think Nova, Telescope or Horizon).
+Follow these steps to get started:
 
 1. Press the "Use template" button at the top of this repo to create a new repo with the contents of this skeleton
 2. Run "php ./configure.php" to run a script that will replace all placeholders throughout all the files
@@ -18,6 +22,9 @@ This repo can be used to scaffold a Laravel package. Follow these steps to get s
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
 ## Support us
+
+The template here is made by YLS Ideas but most of the difficult work came from Spatie's Laravel package template.
+Please consider supporting Spatie as they made so many useful things for the community.
 
 [<img src="https://github-ads.s3.eu-central-1.amazonaws.com/:package_name.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/:package_name)
 
@@ -33,36 +40,28 @@ You can install the package via composer:
 composer require :vendor_slug/:package_slug
 ```
 
-You can publish and run the migrations with:
+You can install :package_name using the built in artisan command:
 
 ```bash
-php artisan vendor:publish --tag=":package_slug_without_prefix-migrations"
-php artisan migrate
+php artisan skeleton:install
 ```
 
-You can publish the config file with:
-```bash
-php artisan vendor:publish --tag=":package_slug_without_prefix-config"
+Once installed you may enable :package_name by setting the env
+
+```dotenv
+SKELETON_DOMAIN=true
 ```
 
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="example-views"
-```
-
-This is the contents of the published config file:
+You may also configure the security of :package_name by editing the SkeletonServiceProvider
+installed in your Providers folder.
 
 ```php
-return [
-];
-```
-
-## Usage
-
-```php
-$skeleton = new VendorName\Skeleton();
-echo $skeleton->echoPhrase('Hello, VendorName!');
+protected function gate(): void
+{
+    Gate::define('viewSkeleton', function ($user) {
+        return true;
+    });
+}
 ```
 
 ## Testing
