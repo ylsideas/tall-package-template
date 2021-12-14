@@ -6,7 +6,7 @@
 [![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/:vendor_slug/:package_slug/run-tests?label=tests)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/:vendor_slug/:package_slug/Check%20&%20fix%20styling?label=code%20style)](https://github.com/:vendor_slug/:package_slug/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/:vendor_slug/:package_slug.svg?style=flat-square)](https://packagist.org/packages/:vendor_slug/:package_slug)
-
+<!--delete-->
 ---
 This repo can be used to scaffold a Simple TALL (Tailwind CSS, AlpineJS, Laravel, Livewire) package that could act as 
 an add-on dash to your project (Think Nova, Telescope or Horizon).
@@ -18,7 +18,7 @@ Follow these steps to get started:
 4. Have fun creating your package.
 5. If you need help creating a package, consider picking up our <a href="https://laravelpackage.training">Laravel Package Training</a> video course.
 ---
-
+<!--/delete-->
 This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
 
 ## Support us

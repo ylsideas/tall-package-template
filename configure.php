@@ -70,27 +70,36 @@ function remove_prefix(string $prefix, string $content): string {
 
 function remove_composer_deps(array $names) {
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
-    
+
     foreach($data['require-dev'] as $name => $version) {
         if (in_array($name, $names, true)) {
             unset($data['require-dev'][$name]);
         }
     }
-    
+
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 }
 
 function remove_composer_script($scriptName) {
     $data = json_decode(file_get_contents(__DIR__.'/composer.json'), true);
-    
+
     foreach($data['scripts'] as $name => $script) {
         if ($scriptName === $name) {
             unset($data['scripts'][$name]);
             break;
         }
     }
-    
+
     file_put_contents(__DIR__.'/composer.json', json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+}
+
+function remove_readme_paragraphs(string $file): void {
+    $contents = file_get_contents($file);
+
+    file_put_contents(
+        $file,
+        preg_replace('/<!--delete-->.*<!--\/delete-->/s', '', $contents) ?: $contents
+    );
 }
 
 function safeUnlink(string $filename) {
@@ -99,9 +108,12 @@ function safeUnlink(string $filename) {
     }
 }
 
+function determineSeparator(string $path): string {
+    return str_replace('/', DIRECTORY_SEPARATOR, $path);
+}
 
 function replaceForWindows(): array {
-    return preg_split('/\\r\\n|\\r|\\n/', run('dir /S /B * | findstr /v /i .github | findstr /v /i vendor | findstr /v /i '.basename(__FILE__).' | findstr /r /i /M /F:/ ":author :vendor :package VendorName skeleton vendor_name vendor_slug author@domain.com"'));
+    return preg_split('/\\r\\n|\\r|\\n/', run('dir /S /B * | findstr /v /i .git\ | findstr /v /i vendor | findstr /v /i '.basename(__FILE__).' | findstr /r /i /M /F:/ ":author :vendor :package VendorName skeleton vendor_name vendor_slug author@domain.com"'));
 }
 
 function replaceForAllOtherOSes(): array {
@@ -179,13 +191,12 @@ foreach ($files as $file) {
     ]);
 
     match (true) {
-        str_contains($file, 'src/Skeleton.php') => rename($file, './src/' . $className . '.php'),
-        str_contains($file, 'src/SkeletonServiceProvider.php') => rename($file, './src/' . $className . 'ServiceProvider.php'),
-        str_contains($file, 'src/Facades/Skeleton.php') => rename($file, './src/Facades/' . $className . '.php'),
-        str_contains($file, 'src/Commands/SkeletonCommand.php') => rename($file, './src/Commands/' . $className . 'Command.php'),
-        str_contains($file, 'tests/SkeletonTest.php') => rename($file, './tests/' . $className . 'Test.php'),
-        str_contains($file, 'database/migrations/create_skeleton_table.php.stub') => rename($file, './database/migrations/create_' . $packageSlugWithoutPrefix . '_table.php.stub'),
-        str_contains($file, 'config/skeleton.php') => rename($file, './config/' . $packageSlugWithoutPrefix . '.php'),
+        str_contains($file, determineSeparator('src/Skeleton.php')) => rename($file, determineSeparator('./src/' . $className . '.php')),
+        str_contains($file, determineSeparator('src/SkeletonServiceProvider.php')) => rename($file, determineSeparator('./src/' . $className . 'ServiceProvider.php')),
+        str_contains($file, determineSeparator('tests/SkeletonTest.php')) => rename($file, determineSeparator('./tests/' . $className . 'Test.php')),
+        str_contains($file, determineSeparator('database/migrations/create_skeleton_table.php.stub')) => rename($file, determineSeparator('./database/migrations/create_' . $packageSlugWithoutPrefix . '_table.php.stub')),
+        str_contains($file, determineSeparator('config/skeleton.php')) => rename($file, determineSeparator('./config/' . $packageSlugWithoutPrefix . '.php')),
+        str_contains($file, 'README.md') => remove_readme_paragraphs($file),
         default => [],
     };
 }
